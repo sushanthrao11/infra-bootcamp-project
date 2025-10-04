@@ -1,0 +1,26 @@
+name: Deploy to EC2
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ec2-user
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOST} '
+            cd ~/my-app
+            git pull || git clone https://github.com/${{ github.repository }}.git ~/my-app
+            cd ~/my-app
+            npm install
+            pm2 restart all || pm2 start index.js --name app
+            pm2 save
+          '
