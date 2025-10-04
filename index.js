@@ -19,10 +19,22 @@ app.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');
     res.send(`
-      <h1>Hello from EC2 with RDS!</h1>
-      <p>Database connected successfully!</p>
-      <p>Current database time: ${result.rows[0].now}</p>
-      <p>Auto-deployed with GitHub Actions!</p>
+      <h1>Infrastructure Bootcamp Complete!</h1>
+      <h2>Full Stack Cloud Application</h2>
+      <p><strong>Database Status:</strong> Connected</p>
+      <p><strong>Database Time:</strong> ${result.rows[0].now}</p>
+      <hr>
+      <h3>Infrastructure Components:</h3>
+      <ul>
+        <li>EC2 Instance (You're looking at it!)</li>
+        <li>RDS PostgreSQL Database</li>
+        <li>S3 Static Website</li>
+        <li>CloudFront CDN</li>
+        <li>GitHub Actions CI/CD</li>
+        <li>Terraform Infrastructure as Code</li>
+      </ul>
+      <p><strong>Auto-deployed via GitHub Actions!</strong></p>
+      <p>GitHub: <a href="https://github.com/sushanthrao11/infra-bootcamp-project">sushanthrao11/infra-bootcamp-project</a></p>
     `);
   } catch (err) {
     res.send(`<h1>Hello from EC2!</h1><p>Database connection error: ${err.message}</p>`);
@@ -32,12 +44,17 @@ app.get('/', async (req, res) => {
 app.get('/health', async (req, res) => {
   try {
     await pool.query('SELECT 1');
-    res.json({ status: 'healthy', database: 'connected', timestamp: new Date() });
+    res.json({ 
+      status: 'healthy', 
+      database: 'connected', 
+      timestamp: new Date(),
+      deployment: 'GitHub Actions CI/CD'
+    });
   } catch (err) {
     res.json({ status: 'unhealthy', database: 'error', error: err.message });
   }
 });
 
 app.listen(port, () => {
-  console.log(`App with database running on port ${port}`);
+  console.log(`Bootcamp app running on port ${port}`);
 });
