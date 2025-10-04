@@ -24,3 +24,5 @@ The application auto-deploys to EC2 when code is pushed to the main branch.
 
 Sushanth Rao
 ## Last Updated: Fri Oct  3 23:42:54 PDT 2025
+
+Deployment test: Fri Oct  3 23:49:03 PDT 2025
